@@ -9,6 +9,7 @@
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
+  name: "ErrorBoundary",
   setup() {
     const hasError = ref(false);
     const getDerivedStateFromError = () => {
@@ -16,6 +17,7 @@ export default defineComponent({
     };
     return {
       hasError,
+      getDerivedStateFromError,
     };
   },
 });
