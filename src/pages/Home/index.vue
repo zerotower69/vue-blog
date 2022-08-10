@@ -1,7 +1,5 @@
 <template>
-  <div class="body">
-      
-  </div>
+  <div class="body"></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";

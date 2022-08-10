@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, defineProps, withDefaults } from "@vue/runtime-core";
 interface Props {
   loading?: boolean;
   isStatic?: boolean;
