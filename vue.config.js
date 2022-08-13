@@ -1,5 +1,6 @@
 const { defineConfig } = require("@vue/cli-service");
 const IS_PROD = process.env.NODE_ENV === "production";
+const path = require("path");
 module.exports = defineConfig({
   devServer: {
     host: "0.0.0.0",
@@ -12,13 +13,26 @@ module.exports = defineConfig({
           //[name] 是文件名 [local]是具体的类名
           //类名模块化，防止重复
           //auto这样设置就可以防止vue文件中的style标签定义的样式丢失了
-          // auto: /(\.module|base|style)\.scss$/i,
-          auto: /\.scss/i,
+          auto: /\.module\.scss$/i,
+          // auto: true,
+          // exportLocalsConvention: "asIs",
+          // auto: true,
           localIdentName: IS_PROD ? "[hash:8]" : "[local]-[hash:base64:6]",
+          // localIdentContext: path.resolve(__dirname, "src"),
           // namedExport: true,
         },
-        esModule: false,
+        // esModule: false,
         sourceMap: !IS_PROD,
+      },
+      sass: {
+        // sassOptions: (loaderContext) => {
+        //   const { resourcePath, rootContext } = loaderContext
+        //   if (/\.vue/.test(resourcePath)) {
+        //     console.log("resourcePath====>", resourcePath);
+        //     console.log("loaderContext===>", loaderContext);
+        //     process.abort()
+        //   }
+        // }
       },
     },
   },

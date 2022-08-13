@@ -32,7 +32,7 @@ export const smallLoadingUrl =
   "https://img.lzxjack.top/img/202203302022741.webp";
 
 // 博客运行起始日
-export const time = "2020-12-16 14:00:00";
+export const time = "2021-01-01 0:00:00";
 
 // // 博客背景图片
 // export const blogBackGroundImgs = [

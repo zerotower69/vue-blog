@@ -25,3 +25,14 @@ export const shuffleArray = (array: any[]) => {
   }
   return res;
 };
+
+export const useRem = (scaleWidth?: number) => {
+  if (scaleWidth === undefined) {
+    scaleWidth = 750; //设计稿默认为750
+  }
+  function inMobile() {
+    document.getElementsByTagName("html")[0].style.fontSize =
+      document.documentElement.clientWidth / (scaleWidth as number) + "px";
+  }
+  return inMobile;
+};

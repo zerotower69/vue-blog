@@ -1,4 +1,4 @@
-import s from "./App.scss";
+import s from "./App.module.scss";
 import classNames from "classnames";
 import Nav from "@/components/Nav";
 import Main from "@/components/Main/index.vue";
@@ -7,9 +7,10 @@ import Footer from "@/components/Footer/index.vue";
 import { BackTop } from "ant-design-vue";
 
 import { useStore } from "@/store";
-import { onMounted, defineComponent } from "vue";
+import { onMounted, onUnmounted, defineComponent } from "vue";
 import type { UseScrollReturn } from "@vueuse/core";
 import { vScroll } from "@vueuse/components";
+import { useRem } from "@/utils/function";
 const App = defineComponent({
   components: {
     Nav,
@@ -22,13 +23,21 @@ const App = defineComponent({
     //set bg color;
     const $store = useStore();
     const BgClasses = [s.bg0, s.bg1, s.bg2];
+    const callback = useRem(450);
     onMounted(() => {
       if ($store.mode === undefined) {
         $store.setMode(1);
       }
       $store.setNavShow(true);
       // $store.setMode();
+      //set rem
+      callback();
+      window.addEventListener("resize", callback);
     });
+    onUnmounted(() => {
+      window.removeEventListener("resize", callback);
+    });
+
     // scroll callback
     function scrollCallback(state: UseScrollReturn) {
       const { x, y, isScrolling, arrivedState, directions } = state;
