@@ -3,7 +3,7 @@
     <div class="navContent">
       <!-- 主页  -->
       <!-- TODO:click to main page -->
-      <div class="homeBtn" @click="handleClickToMainPage">
+      <div class="homeBtn" @click="1">
         <HomeOutlined />
       </div>
       <!-- TODO:后台管理  加入后台系统的链接 -->
@@ -11,6 +11,21 @@
         <SettingOutlined />
       </a>
       <!-- 暗黑模式切换 -->
+      <div class="modeBtn">
+        <BgColorsOutlined />
+        <div class="modeOptions">
+          <div
+            v-for="(backgroudColor, index) in modeOptions"
+            :key="index"
+            :class="['modeItem', `modeItem${index}`]"
+            @click="$emit('update:mode', index)"
+          >
+            <CheckOutlined
+              :style="{ display: mode === index ? 'block' : 'none' }"
+            />
+          </div>
+        </div>
+      </div>
       <!-- 文章单独按钮 -->
       <!-- 其他按钮 -->
       <!-- TODO:获得isActive.设置激活菜单按钮的样式 类似 el-menu -->
@@ -26,7 +41,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, Prop } from "vue";
 import { $ref } from "vue/macros";
 import { Drawer } from "ant-design-vue";
 import {
@@ -39,11 +54,17 @@ import {
 //@ts-ignore
 import { blogAdminUrl } from "@/utils/constant";
 import { useLinkList } from "./config";
-export default defineComponent({
+
+interface Props {
+  navShow?: boolean;
+  setNavShow?: () => void;
+  mode?: number;
+  setMode?: () => void;
+}
+export default defineComponent<Props>({
   name: "Nav",
   components: {
     Drawer,
-    //icons
     BgColorsOutlined,
     CheckOutlined,
     HomeOutlined,
@@ -55,12 +76,19 @@ export default defineComponent({
     const blogUrl = $ref(blogAdminUrl);
     //获得按钮链接
     const { navArr, secondNavArr, mobileNavArr } = useLinkList();
+    const modeOptions = $ref([
+      "rgb(19, 38, 36)",
+      "rgb(110, 180, 214)",
+      "rgb(171, 194, 208)",
+    ]);
+
     return {
       blogUrl,
       handleClickToMainPage,
       navArr,
       secondNavArr,
       mobileNavArr,
+      modeOptions,
     };
   },
 });

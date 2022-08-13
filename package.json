@@ -11,9 +11,15 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@cloudbase/js-sdk": "^1.7.2",
+    "@vueuse/components": "^9.1.0",
+    "@vueuse/core": "^7.7.1",
+    "ahooks-vue": "^0.13.3",
     "ant-design-vue": "^3.2.11",
+    "arhooks-vue": "^1.0.6",
     "axios": "^0.27.2",
+    "classnames": "^2.3.1",
     "core-js": "^3.8.3",
+    "pinia": "^2.0.18",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"

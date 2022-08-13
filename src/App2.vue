@@ -24,7 +24,7 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
-@import "./global.custom.scss";
+@import "./global.custom.module.scss";
 
 @font-face {
   font-family: "FiraCode";
