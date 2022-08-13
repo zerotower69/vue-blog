@@ -15,6 +15,7 @@ module.exports = defineConfig({
           // auto: /(\.module|base|style)\.scss$/i,
           auto: /\.scss/i,
           localIdentName: IS_PROD ? "[hash:8]" : "[local]-[hash:base64:6]",
+          // namedExport: true,
         },
         esModule: false,
         sourceMap: !IS_PROD,

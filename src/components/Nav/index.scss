@@ -122,7 +122,7 @@
             right: 80px;
             margin-right: 0;
 
-            .modeOpions {
+            .modeOptions {
                 position: absolute;
                 left: 50%;
                 top: -180px;
@@ -163,7 +163,7 @@
             }
         }
 
-        .modeBtn:hover .modeOpions {
+        .modeBtn:hover .modeOptions {
             top: 60px;
         }
     }
@@ -185,7 +185,7 @@
 }
 
 // 手机端导航
-.mobileNavBox {
+.mobile-nav-box {
     .mobileNavItem {
         display: flex;
         justify-content: center;

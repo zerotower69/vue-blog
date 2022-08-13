@@ -23,6 +23,7 @@ import { defineComponent, useCssModule, onMounted, ref, reactive } from "vue";
 import { useStore } from "@/store";
 import { useEventListener, useLocalStorage, useScroll } from "@vueuse/core";
 
+const modeOptions = ["rgb(19,38,36)", "rgb(110,180,214)", "rgb(171,194,208)"];
 export interface Nav {
   navShow?: boolean;
   setNavShow?: () => void;
@@ -40,7 +41,6 @@ const NavComp = defineComponent<Nav>({
     const $router = useRouter();
     const $store = useStore();
     const { navArr, secondNavArr, mobileNavArr } = useLinkList();
-    const el = ref<HTMLElement | null>(null);
     onMounted(() => {
       // console.log(style);
     });
@@ -49,10 +49,7 @@ const NavComp = defineComponent<Nav>({
 
     return () => (
       <>
-        <nav
-          ref="el"
-          class={classNames(s.nav, { [s.hiddenNav]: !$store.navShow })}
-        >
+        <nav class={classNames(s.nav, { [s.hiddenNav]: !$store.navShow })}>
           <div class={s.navContent}>
             {/* 主页 */}
             <div class={s.homeBtn} onClick={() => $router.push("/")}>
@@ -68,6 +65,27 @@ const NavComp = defineComponent<Nav>({
             >
               <SettingOutlined />
             </a>
+
+            {/* 黑暗模式切换 */}
+            <div class={classNames(s.modeBtn)}>
+              <BgColorsOutlined />
+              <div class={classNames(s.modeOptions)}>
+                {modeOptions.map((backgroundColor, index) => (
+                  <div
+                    key={index}
+                    style={{ backgroundColor }}
+                    class={classNames(s.modeItem, s[`modeItem${index}`])}
+                    onClick={() => $store.setMode(index)}
+                  >
+                    <CheckOutlined
+                      style={{
+                        display: $store.mode === index ? "block" : "none",
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* 其他按钮 */}
             {navArr.map((item, index) => (
