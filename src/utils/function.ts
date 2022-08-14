@@ -1,3 +1,6 @@
+import {} from "@vueuse/core";
+import { ref, reactive } from "vue";
+import type { Ref } from "vue";
 /**
  * 生成指定范围内的随机整数，左闭右闭
  * @param {Number} Min
@@ -36,3 +39,26 @@ export const useRem = (scaleWidth?: number) => {
   }
   return inMobile;
 };
+
+/**
+ * 通过一个函数得到响应式数据和设置这个响应对象的方法
+ * @param {string} key 值的名字key
+ * @param {T} initialValue 初始值
+ * @returns {[T,(T)=>void]}  值和设置这个响应数据的函数对象
+ */
+export function useSafeState<T>(initialValue?: T) {
+  let refVal: any = null;
+  const valType = typeof initialValue;
+  if (valType === "undefined") {
+    refVal = ref(null);
+  } else if (["string", "number", "boolean"].includes(valType)) {
+    refVal = ref(initialValue);
+  } else if (["object", "null"].includes(valType)) {
+    refVal = reactive(initialValue as any);
+  }
+  function setValue(val?: T) {
+    refVal.value = val;
+  }
+
+  return [refVal as Ref<T>, setValue] as const;
+}

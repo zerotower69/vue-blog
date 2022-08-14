@@ -2,7 +2,7 @@ import s from "./App.module.scss";
 import classNames from "classnames";
 import Nav from "@/components/Nav";
 import Main from "@/components/Main/index.vue";
-import Footer from "@/components/Footer/index.vue";
+import Footer from "@/components/Footer";
 
 import { BackTop } from "ant-design-vue";
 

@@ -17,7 +17,7 @@ import MobileNav from "./mobileNav.vue";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import { blogAdminUrl } from "@/utils/constant";
 import { modeMap, modeMapArr } from "@/utils/modeMap";
-
+import { useSafeState } from "@/utils/function";
 import { defineComponent, useCssModule, onMounted, ref, reactive } from "vue";
 // import { $ref } from "vue/macros";
 import { useStore } from "@/store";
@@ -44,22 +44,21 @@ const NavComp = defineComponent<Nav>({
     const $router = useRouter();
     const $store = useStore();
     const { navArr, secondNavArr, mobileNavArr } = useLinkList();
-    onMounted(() => {
-      // console.log(style);
-    });
-
-    //   const [visible, { toggle,setLeft,setRight}] = useToggle(false);
-    // control visible;
+    onMounted(() => {});
+    const aa = ref("12");
     const useState = createGlobalState(() => {
       return {
         visible: false,
       };
     });
     const state = useState();
-    const visible = ref(false);
-    const setVisible = (val: boolean) => {
-      visible.value = val;
-    };
+    // const visible = ref(false);
+    // const setVisible = (val: boolean) => {
+    //   visible.value = val;
+    // };
+
+    const [visible, setVisible] = useSafeState<boolean>(false);
+
     return () => (
       <>
         {/* pc导航 */}
@@ -136,7 +135,12 @@ const NavComp = defineComponent<Nav>({
         </nav>
         {/* 移动端导航 */}
         {/* 点击打开 */}
-        <div class={s.mobileNavBtn} onclick={setVisible(true)}>
+        <div
+          class={s.mobileNavBtn}
+          onClick={() => {
+            setVisible(true);
+          }}
+        >
           <MenuOutlined></MenuOutlined>
         </div>
         {/* <MobileNav></MobileNav> */}

@@ -9,7 +9,7 @@ export const icp_no = "浙ICP备2020043821号-1";
 export const blogAdminUrl =
   "https://react-blog-admin-8fo571wf24c87f9-1304393382.tcloudbaseapp.com/";
 
-export const siteTitle = "飞鸟小站";
+export const siteTitle = "Zero的🛖";
 
 // GitHub地址
 export const githubUrl = "https://github.com/lzxjack";
@@ -95,3 +95,40 @@ export const avatarArrLen = defaultCommentAvatarArr.length;
 // 评论回复时，发送邮件提醒的API地址
 export const emailApi =
   "https://react-blog-admin-8fo571wf24c87f9-1304393382.ap-shanghai.app.tcloudbase.com/sendemail";
+
+//底部显示的技术框架和官方文档的地址
+//TODO:未来放入后台配置
+export const skills: Array<{ name: string; url: string }> = [
+  {
+    name: "Vue",
+    url: "",
+  },
+  {
+    name: "Vue Router",
+    url: "",
+  },
+  {
+    name: "Pinia",
+    url: "",
+  },
+  {
+    name: "Webpack",
+    url: "",
+  },
+  {
+    name: "Vue Cli",
+    url: "",
+  },
+  {
+    name: "VueUse",
+    url: "",
+  },
+  {
+    name: "AntDisignVue",
+    url: "",
+  },
+  {
+    name: "Go",
+    url: "",
+  },
+];

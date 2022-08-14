@@ -1,11 +1,15 @@
 <template>
   <main>
+    <!-- TODO:remove it -->
     <div style="height: 2000px !important">
       <error-boundary ref="error">
         <!-- TODO:利用suspense实现骨架屏 -->
-        <suspense>
-          <router-view></router-view>
-        </suspense>
+        <!-- <Suspense>
+          <template #fallback>
+            <div>error</div>
+          </template> -->
+        <router-view></router-view>
+        <!-- </Suspense> -->
       </error-boundary>
     </div>
   </main>

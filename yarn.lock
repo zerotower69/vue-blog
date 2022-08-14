@@ -5823,6 +5823,11 @@ jest@^27.0.5, jest@^27.1.0:
     import-local "^3.0.2"
     jest-cli "^27.5.1"
 
+jinrishici@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/jinrishici/-/jinrishici-1.0.6.tgz#1f3e1259de5e889ce1bab00f118248c7c346bd98"
+  integrity sha512-4Bk5VHo6xg9DspGS8y8I7D6kftA6DYy4rSvwpdtxFvh9DidXMgf+NSZKAXrcLTi8S5NjqmwkpAKYPHXRURH64Q==
+
 joi@^17.4.0:
   version "17.6.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.6.0.tgz#0bb54f2f006c09a96e75ce687957bd04290054b2"
