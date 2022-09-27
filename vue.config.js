@@ -2,9 +2,20 @@ const { defineConfig } = require("@vue/cli-service");
 const IS_PROD = process.env.NODE_ENV === "production";
 const path = require("path");
 module.exports = defineConfig({
+  publicPath: IS_PROD ? "" : "/",
+  pages: {
+    index: {
+      entry: "src/main.ts",
+      template: "public/index.html",
+      // output as dist/index.html
+      filename: "index.html",
+      title: "zerotower的技术小屋",
+    },
+  },
   devServer: {
     host: "0.0.0.0",
     port: 9000,
+    hot: true,
   },
   css: {
     loaderOptions: {
@@ -61,6 +72,17 @@ module.exports = defineConfig({
       //       ...options,
       //     }
       // })
+      if (IS_PROD) {
+        config.output.filename("js/[name].[contenthash:8].js").end();
+        config.output.chunkFilename("js/[name].[contenthash:8].js").end();
+        config.plugin("extract-css").tap((args) => [
+          {
+            filename: `css/[name].[contenthash:8].css`,
+            chunkFilename: `css/[name].[contenthash:8].css`,
+          },
+        ]);
+      }
     }
   },
+  productionSourceMap: false,
 });

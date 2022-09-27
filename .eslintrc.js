@@ -27,6 +27,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-var-requires": "off",
+    "linebreak-style": [0, "off", "windows"],
   },
 
   overrides: [

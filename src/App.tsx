@@ -9,6 +9,7 @@ import { BackTop } from "ant-design-vue";
 import { useStore } from "@/store";
 import { onMounted, onUnmounted, defineComponent } from "vue";
 import type { UseScrollReturn } from "@vueuse/core";
+import { useScroll, useThrottleFn } from "@vueuse/core";
 import { vScroll } from "@vueuse/components";
 import { useRem } from "@/utils/function";
 const App = defineComponent({
@@ -33,10 +34,21 @@ const App = defineComponent({
       //set rem
       callback();
       window.addEventListener("resize", callback);
+      // body scroll event
+      window.addEventListener("scroll", scrollApp);
     });
     onUnmounted(() => {
       window.removeEventListener("resize", callback);
+      window.removeEventListener("scroll", scrollApp);
     });
+
+    //scroll body
+    const scrollApp = (e: Event) => {
+      const { x, y, isScrolling, arrivedState, directions } = useScroll(
+        e.target as Document
+      );
+      console.log(directions.bottom, directions.top, arrivedState);
+    };
 
     // scroll callback
     function scrollCallback(state: UseScrollReturn) {
@@ -53,7 +65,7 @@ const App = defineComponent({
     }
     return () => (
       <div class={classNames(s.AppBox, BgClasses[$store.mode!])}>
-        <div v-scroll={scrollCallback}>
+        <div>
           <Nav />
           <Main></Main>
           <Footer></Footer>

@@ -25,7 +25,13 @@ const Footer = defineComponent({
         </span>
         <span>
           {skills.map((skill, index) => (
-            <span key={index} class={s.siteFrame}>
+            <span
+              key={index}
+              class={s.siteFrame}
+              onClick={() => {
+                window.open(skill.url);
+              }}
+            >
               {skill.name}
             </span>
           ))}

@@ -5,8 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy":"tcb hosting deploy ./dist / -e blog-4gir71iy91260846",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
+    
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",

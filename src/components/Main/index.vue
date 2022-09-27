@@ -8,7 +8,7 @@
           <template #fallback>
             <div>error</div>
           </template> -->
-        <router-view></router-view>
+        <router-view />
         <!-- </Suspense> -->
       </error-boundary>
     </div>
