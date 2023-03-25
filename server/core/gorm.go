@@ -1,7 +1,7 @@
 package core
 
 import (
-	"go-vue-blog/global"
+	"go-blog/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -27,17 +27,17 @@ func InitGorm() *gorm.DB {
 		mysqlLogger = logger.Default.LogMode(logger.Error)
 	}
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	gormDb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: mysqlLogger,
 	})
 	if err != nil {
 		global.Log.Fatalf("[%s] mysql connected error: ", dsn)
 	}
 
-	sqlDB, _ := db.DB()
+	sqlDB, _ := gormDb.DB()
 	sqlDB.SetMaxIdleConns(10)  //set max idle connections
 	sqlDB.SetMaxOpenConns(100) //set max open connections
 	sqlDB.SetConnMaxLifetime(time.Hour * 4)
 
-	return db
+	return gormDb
 }

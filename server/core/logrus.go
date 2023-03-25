@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"go-vue-blog/global"
+	"go-blog/global"
 	"os"
 	"path"
 )
@@ -20,7 +20,7 @@ const (
 
 type LogFormatter struct{}
 
-//Format complete the interface of logrus Formatter
+// Format complete the interface of logrus Formatter
 func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	//show color according to the level
 	var levelColor int

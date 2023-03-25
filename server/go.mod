@@ -1,4 +1,4 @@
-module go-vue-blog
+module go-blog
 
 go 1.20
 
