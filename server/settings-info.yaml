@@ -1,0 +1,14 @@
+mysql: #mysql的相关配置
+  host: #主机地址，例如 127.0.0.1
+  port: #数据库端口 3306
+  config: #
+  db: #数据库名称 例如 blog
+  user: #用户名，例如root
+  password: #密码，例如："12345678"
+  log_level: #日志等级,可选：dev、prod
+logger: # 日志相关
+  level: # 日志的等级，例如：info
+  prefix: #日志的前缀，例如：'[zero-blog]'
+  director: #日志分割使用，指定日志存放的目录 例如:log
+  show_line: #日志中是否显示行号
+  log_in_console: #是否将日志打印在控制台
