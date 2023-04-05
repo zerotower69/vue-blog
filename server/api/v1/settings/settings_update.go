@@ -8,7 +8,7 @@ import (
 	"go-blog/models/res"
 )
 
-func (SettingsApi) SettingsInfoUpdateView(c *gin.Context) {
+func (SettingsApi) SettingsInfoUpdate(c *gin.Context) {
 	var cr config.SiteInfo
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {

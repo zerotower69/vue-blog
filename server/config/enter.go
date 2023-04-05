@@ -7,6 +7,7 @@ type Config struct {
 	System   System   `yaml:"system"`
 	QQ       QQ       `yaml:"qq"`
 	QiNiu    QiNiu    `yaml:"qi_niu"`
+	Upload   Upload   `yaml:"upload"`
 	Email    Email    `yaml:"email"`
 	Jwt      Jwt      `yaml:"jwt"`
 	SiteInfo SiteInfo `yaml:"site-info"`

@@ -11,4 +11,4 @@ logger: # 日志相关
   prefix: #日志的前缀，例如：'[zero-blog]'
   director: #日志分割使用，指定日志存放的目录 例如:log
   show_line: #日志中是否显示行号
-  log_in_console: #是否将日志打印在控制台
+  log_in_console: #是否将日志打印在控制台 true/false
