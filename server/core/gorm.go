@@ -27,6 +27,9 @@ func InitGorm() *gorm.DB {
 		mysqlLogger = logger.Default.LogMode(logger.Error)
 	}
 
+	//TODO:获取配置文件中的日志级别进一步改造
+	global.MySQLLog = logger.Default.LogMode(logger.Info)
+
 	gormDb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: mysqlLogger,
 	})

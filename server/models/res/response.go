@@ -2,6 +2,7 @@ package res
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-blog/utils"
 	"net/http"
 )
 
@@ -47,6 +48,11 @@ func OkWithData(data any, c *gin.Context) {
 	Result(SUCCESS, data, "操作成功", c)
 }
 
+// OkWithPage 成功地返回分页的数据
+func OkWithPage(list any, total any, c *gin.Context) {
+	OkWithData(gin.H{"list": list, "total": total}, c)
+}
+
 func OkWithDetailed(data any, message string, c *gin.Context) {
 	Result(SUCCESS, data, message, c)
 }
@@ -67,6 +73,11 @@ func Fail(data any, message string, c *gin.Context) {
 
 func FailWithMessage(message string, c *gin.Context) {
 	Result(ERROR, map[string]any{}, message, c)
+}
+
+func FailWithError(err error, obj any, c *gin.Context) {
+	msg := utils.GetValidMsg(err, obj)
+	FailWithMessage(msg, c)
 }
 
 func FailWithCode(code ErrorCode, c *gin.Context) {

@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-blog/global"
+	"go-blog/models"
 	"go-blog/models/res"
 	"go-blog/utils"
+	"io"
 	"io/fs"
 	"os"
 	"path"
@@ -107,23 +109,49 @@ func (ImagesApi) ImageMultiUpload(c *gin.Context) {
 				Msg:       fmt.Sprintf("图片大小超过%dMB,当前文件大小为：%.2f", global.Config.Upload.Size, size),
 			})
 			continue
-		} else {
-			err := c.SaveUploadedFile(file, filepath)
-			var res = FileUploadResponse{
-				FileName: file.Filename,
-				Size:     size,
-			}
-			if err != nil {
-				global.Log.Error(err)
-				res.IsSuccess = false
-				res.Msg = "保存图片时失败，失败原因：" + err.Error()
-				fileResList = append(fileResList, res)
-				continue
-			}
-			res.IsSuccess = true
-			res.Msg = "保存成功"
-			fileResList = append(fileResList, res)
 		}
+
+		fileObj, err := file.Open()
+		if err != nil {
+			global.Log.Error(err)
+		}
+		byteData, err := io.ReadAll(fileObj)
+		imageHash := utils.Md5(byteData)
+		//去数据库查看图片是否存在
+		var bannerModel models.BannerModel
+		err = global.DB.Take(&bannerModel, "hash = ?", imageHash).Error
+		if err == nil {
+			//找到了
+			fileResList = append(fileResList, FileUploadResponse{
+				FileName:  file.Filename,
+				Size:      size,
+				IsSuccess: false,
+				Msg:       "图片已存在",
+			})
+			continue
+		}
+
+		err = c.SaveUploadedFile(file, filepath)
+		var res = FileUploadResponse{
+			FileName: file.Filename,
+			Size:     size,
+		}
+		if err != nil {
+			global.Log.Error(err)
+			res.IsSuccess = false
+			res.Msg = "保存图片时失败，失败原因：" + err.Error()
+			fileResList = append(fileResList, res)
+			continue
+		}
+		res.IsSuccess = true
+		res.Msg = "保存成功"
+		fileResList = append(fileResList, res)
+		//图片入库
+		global.DB.Create(&models.BannerModel{
+			Path: filepath,
+			Hash: imageHash,
+			Name: file.Filename,
+		})
 	}
 	res.OkWithData(fileResList, c)
 }

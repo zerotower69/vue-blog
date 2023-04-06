@@ -15,3 +15,7 @@ type PageInfo struct {
 	Sort  string   `json:"sort" form:"sort"`   //排序
 	Like  []string `json:"Like" form:"like"`   //需要模糊匹配的列表
 }
+
+type RemoveRequest struct {
+	IDList []uint `json:"id_list"`
+}

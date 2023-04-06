@@ -3,6 +3,7 @@ package global
 import (
 	"github.com/sirupsen/logrus"
 	"go-blog/config"
+	"gorm.io/gorm/logger"
 
 	"gorm.io/gorm"
 )
@@ -22,4 +23,5 @@ var (
 		"svg",
 		"webp",
 	}
+	MySQLLog logger.Interface
 )
