@@ -5,7 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-blog/global"
 	"go-blog/models"
+	"go-blog/models/ctype"
 	"go-blog/models/res"
+	"go-blog/plugins/qiniu"
 	"go-blog/utils"
 	"io"
 	"io/fs"
@@ -21,47 +23,8 @@ type FileUploadResponse struct {
 	Msg       string  `json:"msg"`        //响应消息
 }
 
-// ImageSingleUpload 上传单个图片，返回图片的url
-func (ImagesApi) ImageSingleUpload(c *gin.Context) {
-	file, err := c.FormFile("image")
-	if err != nil {
-		res.FailWithMessage(err.Error(), c)
-		return
-	}
-	basePath := global.Config.Upload.Path
-	_, err = os.ReadDir(basePath)
-	if err != nil {
-		err = os.MkdirAll(global.Config.Upload.Path, fs.ModePerm) //MkdirAll 节省代码量
-		if err != nil {
-			global.Log.Error(err)
-		}
-	}
-	size := float64(file.Size) / float64(1024*1024)
-	filepath := path.Join(basePath, file.Filename)
-	if size > float64(file.Size)/float64(1024*1024) {
-		res.OkWithData(FileUploadResponse{
-			FileName:  file.Filename,
-			Size:      size,
-			IsSuccess: false,
-			Msg:       fmt.Sprintf("图片大小超过%dMB,当前文件大小为：%.2f", global.Config.Upload.Size, size),
-		}, c)
-	} else {
-		err = c.SaveUploadedFile(file, filepath)
-		if err != nil {
-			global.Log.Error(err)
-			res.FailWithMessage("失败原因："+err.Error(), c)
-		}
-		res.OkWithData(FileUploadResponse{
-			FileName:  file.Filename,
-			Size:      size,
-			IsSuccess: true,
-			Msg:       "保存成功",
-		}, c)
-	}
-}
-
-// ImageMultiUpload 上传多张图片
-func (ImagesApi) ImageMultiUpload(c *gin.Context) {
+// ImageUpload 上传多张图片
+func (ImagesApi) ImageUpload(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {
 		res.FailWithMessage(err.Error(), c)
@@ -87,8 +50,12 @@ func (ImagesApi) ImageMultiUpload(c *gin.Context) {
 	for _, file := range fileList {
 		//先判断图片是否合法
 		nameList := strings.Split(file.Filename, ".")
+		//fileName := nameList[0]
+		//图片的文件后缀名
 		suffix := strings.ToLower(nameList[len(nameList)-1])
+		//大小，以M为判断单位
 		size := float64(file.Size) / float64(1024*1024)
+		//global中设置了合法的图片后缀白名单
 		if !utils.InList(suffix, global.WhiteImageList) {
 			fileResList = append(fileResList, FileUploadResponse{
 				FileName:  file.Filename,
@@ -100,7 +67,7 @@ func (ImagesApi) ImageMultiUpload(c *gin.Context) {
 		}
 		//拼接文件的路径
 		filepath := path.Join(basePath, file.Filename)
-		//判断大小（M）
+		//判断大小（M），大于则不上传
 		if size > float64(global.Config.Upload.Size) {
 			fileResList = append(fileResList, FileUploadResponse{
 				FileName:  file.Filename,
@@ -110,16 +77,18 @@ func (ImagesApi) ImageMultiUpload(c *gin.Context) {
 			})
 			continue
 		}
-
+		//打开图片，读取内容
 		fileObj, err := file.Open()
 		if err != nil {
 			global.Log.Error(err)
 		}
 		byteData, err := io.ReadAll(fileObj)
+		//计算图片hash
 		imageHash := utils.Md5(byteData)
 		//去数据库查看图片是否存在
 		var bannerModel models.BannerModel
 		err = global.DB.Take(&bannerModel, "hash = ?", imageHash).Error
+		//找到图片则不再重新上传
 		if err == nil {
 			//找到了
 			fileResList = append(fileResList, FileUploadResponse{
@@ -130,12 +99,36 @@ func (ImagesApi) ImageMultiUpload(c *gin.Context) {
 			})
 			continue
 		}
-
-		err = c.SaveUploadedFile(file, filepath)
 		var res = FileUploadResponse{
 			FileName: file.Filename,
 			Size:     size,
 		}
+		fmt.Println(global.Config.QiNiu)
+		//图片上传到七牛
+		if global.Config.QiNiu.Enable {
+			filepath, err = qiniu.UploadImage(byteData, file.Filename, "blog")
+			if err != nil {
+				global.Log.Error(err)
+				res.IsSuccess = false
+				res.Msg = "图片上传到七牛失败"
+				fileResList = append(fileResList, res)
+				continue
+			}
+			res.IsSuccess = true
+			res.Msg = "图片上传到七牛成功"
+			fileResList = append(fileResList, res)
+			//图片入库
+			global.DB.Create(&models.BannerModel{
+				Path:      filepath,
+				Hash:      imageHash,
+				Name:      file.Filename,
+				ImageType: ctype.QiNiu,
+			})
+			continue
+		}
+
+		err = c.SaveUploadedFile(file, filepath)
+
 		if err != nil {
 			global.Log.Error(err)
 			res.IsSuccess = false
@@ -148,9 +141,10 @@ func (ImagesApi) ImageMultiUpload(c *gin.Context) {
 		fileResList = append(fileResList, res)
 		//图片入库
 		global.DB.Create(&models.BannerModel{
-			Path: filepath,
-			Hash: imageHash,
-			Name: file.Filename,
+			Path:      filepath,
+			Hash:      imageHash,
+			Name:      file.Filename,
+			ImageType: ctype.Local,
 		})
 	}
 	res.OkWithData(fileResList, c)

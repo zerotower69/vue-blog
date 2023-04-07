@@ -6,7 +6,7 @@ type Config struct {
 	Logger   Logger   `yaml:"logger"`
 	System   System   `yaml:"system"`
 	QQ       QQ       `yaml:"qq"`
-	QiNiu    QiNiu    `yaml:"qi_niu"`
+	QiNiu    QiNiu    `yaml:"qiniu"`
 	Upload   Upload   `yaml:"upload"`
 	Email    Email    `yaml:"email"`
 	Jwt      Jwt      `yaml:"jwt"`
