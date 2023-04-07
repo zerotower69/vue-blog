@@ -11,4 +11,5 @@ type QiNiu struct {
 	Size          float64 `json:"size" yaml:"size"`                     //存储的大小限制，单位是MB
 	UseHttps      bool    `json:"use_https" yaml:"useHttps"`            //是否启用https
 	UseCdnDomains bool    `json:"use_cdn_domains" yaml:"useCdnDomains"` //是否启用CDN加速上传
+	Prefix        string  `json:"prefix" yaml:"prefix"`                 //前缀
 }

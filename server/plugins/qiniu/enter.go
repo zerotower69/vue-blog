@@ -71,7 +71,7 @@ func UploadImage(data []byte, imageName string, prefix string) (filePath string,
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("%s/%s", q.CDN, ret.Key), nil
+	return fmt.Sprintf("%s", ret.Key), nil
 }
 
 // RemoveImage 删除七牛的图片

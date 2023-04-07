@@ -9,19 +9,8 @@ import (
 )
 
 var (
-	Config *config.Config
-	DB     *gorm.DB
-	Log    *logrus.Logger
-	// WhiteImageList 图片白名单
-	WhiteImageList = []string{
-		"jpg",
-		"png",
-		"jpeg",
-		"ico",
-		"tiff",
-		"gif",
-		"svg",
-		"webp",
-	}
+	Config   *config.Config
+	DB       *gorm.DB
+	Log      *logrus.Logger
 	MySQLLog logger.Interface
 )
