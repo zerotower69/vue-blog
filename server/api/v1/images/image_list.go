@@ -8,6 +8,14 @@ import (
 )
 
 // ImageList 图片列表查询
+// @Tags 图片管理
+// @Summary 图片列表
+// @Description 获取图片的分页列表
+// @Param limit query number true "每页最大数量"
+// @Param page query number true "请求页数"
+// @Router /images/list [get]
+// @Produce json
+// @Success 200 {object} any
 func (ImagesApi) ImageList(c *gin.Context) {
 	//var imageList []models.BannerModel
 	var cr models.PageInfo

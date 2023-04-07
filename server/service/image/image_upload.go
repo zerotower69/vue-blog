@@ -55,6 +55,7 @@ func (ImageService) ImageUploadService(file *multipart.FileHeader) (res FileUplo
 	//去数据库查看图片是否存在
 	var bannerModel models.BannerModel
 	err = global.DB.Take(&bannerModel, "hash = ?", imageHash).Error
+	fmt.Println(err)
 	if err == nil {
 		res.Msg = "图片已存在"
 		res.FileName = bannerModel.Path

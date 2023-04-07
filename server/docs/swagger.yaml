@@ -1,0 +1,33 @@
+basePath: /api/v1/
+host: 127.0.0.1:8080
+info:
+  contact: {}
+  description: golang开发的后台接口文档
+  title: vue-blog API接口文档
+  version: "1.0"
+paths:
+  /images/list:
+    get:
+      description: 获取图片的分页列表
+      parameters:
+      - description: 每页最大数量
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: 请求页数
+        in: query
+        name: page
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: 图片列表
+      tags:
+      - 图片管理
+swagger: "2.0"

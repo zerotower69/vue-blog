@@ -2,11 +2,17 @@ package main
 
 import (
 	"go-blog/core"
+	_ "go-blog/docs"
 	"go-blog/flag"
 	"go-blog/global"
 	"go-blog/routers"
 )
 
+// @title vue-blog API接口文档
+// @version 1.0
+// @description golang开发的后台接口文档
+// @host 127.0.0.1:8080
+// @BasePath /api/v1/
 func main() {
 	//read the config file
 	core.InitConf()
